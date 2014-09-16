@@ -1,7 +1,5 @@
 #!/bin/bash
 source $OPENSHIFT_CARTRIDGE_SDK_BASH
-source "${OPENSHIFT_RUBY_DIR}/lib/util"
-source "${OPENSHIFT_RUBY_DIR}/lib/ruby_context"
 
 function run_hook() {
   local path="$OPENSHIFT_REPO_DIR/.openshift/action_hooks/$1"
@@ -17,7 +15,7 @@ function start() {
     logf="${OPENSHIFT_LOG_DIR}/hskt.log"
     echo "Starting hello socket" >> $logf
 
-    ruby hellosocket.rb >> $logf 2>&1 &
+    ruby "${OPENSHIFT_HSKT_DIR}/lib/hellosocket.rb" >> $logf 2>&1 &
 
     ret=$?
     npid=$!
@@ -40,17 +38,8 @@ function stop() {
           echo "`date`: Stopping application '$OPENSHIFT_APP_NAME' ..." >> $logf
           /bin/kill $hskt_pid
           ret=$?
-          if [ $ret -ne 0 ]; then
-                  TIMEOUT="$STOPTIMEOUT"
-                  while [ $TIMEOUT -gt 0 ] && is_go_service_running ; do
-                          /bin/kill -0 "$go_pid" >/dev/null 2>&1 || break
-                          sleep 1
-                          let TIMEOUT=${TIMEOUT}-1
-                  done
-          fi
-  
           echo "`date +"$FMT"`: Stopped Go application '$OPENSHIFT_APP_NAME'" >> $logf
-          rm -f $OPENSHIFT_GO_DIR/pid/go.pid
+          rm -f $OPENSHIFT_HSKT_DIR/hskt.pid
   else
           echo "Warning: Application '$OPENSHIFT_APP_NAME' server exists without a pid file.  Use force-stop to kill." 1>&2
   fi
