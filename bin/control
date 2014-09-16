@@ -15,7 +15,7 @@ function start() {
     logf="${OPENSHIFT_LOG_DIR}/hskt.log"
     echo "Starting hello socket" >> $logf
 
-    ruby "${OPENSHIFT_HSKT_DIR}/lib/hellosocket.rb" >> $logf 2>&1 &
+    ruby "${OPENSHIFT_REPO_DIR}/hellosocket.rb" >> $logf 2>&1 &
 
     ret=$?
     npid=$!
