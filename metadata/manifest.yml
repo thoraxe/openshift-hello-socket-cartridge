@@ -1,13 +1,14 @@
 Name: Hello Socket!
 Cartridge-Short-Name: hello-socket
-Cartridge-Version: '0.0.1'
-Compatible-Versions:
-        - '0.0.1'
-Cartridge-Vendor: thoraxe
 Display-Name: Hello Socket!
-Description: "A sample downloadable cartridge for educational purposes"
-Source-Url: git@github.com:thoraxe/openshift-hello-socket-cartridge.git
 Version: '0.0.1'
+Versions: ['0.0.1']
+Website: https://github.com/thoraxe/openshift-hello-socket-cartridge
+Cartridge-Version: 0.0.1
+Cartridge-Vendor: thoraxe
 Categories:
         - service
         - web_framework
+        - hellosocket
+Description: "A sample downloadable cartridge for educational purposes"
+Source-Url: git@github.com:thoraxe/openshift-hello-socket-cartridge.git
