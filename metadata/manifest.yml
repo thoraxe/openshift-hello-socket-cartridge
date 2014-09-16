@@ -11,4 +11,3 @@ Categories:
         - web_framework
         - hellosocket
 Description: "A sample downloadable cartridge for educational purposes"
-Source-Url: git@github.com:thoraxe/openshift-hello-socket-cartridge.git
