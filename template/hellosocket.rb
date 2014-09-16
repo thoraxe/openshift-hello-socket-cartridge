@@ -1,6 +1,6 @@
 require 'socket'
 
-server = TCPServer.new("#{ENV["OPENSHIFT_HSKT_IP"]},22222)
+server = TCPServer.new("#{ENV["OPENSHIFT_HSKT_IP"]}",22222)
 loop do
   client = server.accept    # Wait for a client to connect
   client.puts "Hello socket!"
