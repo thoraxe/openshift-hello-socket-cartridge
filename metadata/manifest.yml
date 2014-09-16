@@ -12,7 +12,6 @@ Categories:
         - hellosocket
 Description: "A sample downloadable cartridge for educational purposes"
 Endpoints:
-Endpoints:
   - Private-IP-Name:   IP
     Private-Port-Name: PORT
     Private-Port:      22222
