@@ -12,7 +12,11 @@ Categories:
         - hellosocket
 Description: "A sample downloadable cartridge for educational purposes"
 Endpoints:
-        - Private-IP-Name: IP
-        Private-Port-Name: PORT
-        Private-Port: 22222
-        Public-Port-Name: PROXY_PORT
+- Private-IP-Name: IP
+  Private-Port-Name: PORT
+  Private-Port: 22222
+  Public-Port-Name: PROXY_PORT
+  Mappings:
+  - Frontend: ""
+    Backend: ""
+    Options: { websocket: true }
