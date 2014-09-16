@@ -7,4 +7,7 @@ Cartridge-Vendor: thoraxe
 Display-Name: Hello Socket!
 Description: "A sample downloadable cartridge for educational purposes"
 Source-Url: git@github.com:thoraxe/openshift-hello-socket-cartridge.git
-
+Version: '0.0.1'
+Categories:
+        - service
+        - web_framework
