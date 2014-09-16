@@ -21,7 +21,7 @@ function start() {
 
     ret=$?
     npid=$!
-    if [ $ret -eq 0 ] then
+    if [ $ret -eq 0 ]; then
             echo "$npid" > "$OPENSHIFT_HSKT_DIR/hskt.pid"
     else
             echo "Application '$OPENSHIFT_APP_NAME' failed to start - $ret" 1>&2 >> $logf
