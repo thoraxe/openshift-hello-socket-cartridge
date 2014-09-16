@@ -14,7 +14,7 @@ function run_hook() {
 }
 
 function start() {
-    logf="${OPENSHIFT_HSKT_LOG_DIR}/hskt.log"
+    logf="${OPENSHIFT_LOG_DIR}/hskt.log"
     echo "Starting hello socket" >> logf
 
     ruby hellosocket.rb >> $logf 2>&1 &
@@ -36,7 +36,7 @@ function stop() {
   fi
   
   if [ -n "$hskt_pid" ]; then
-          logf="${OPENSHIFT_HSKT_LOG_DIR}/hskt.log"
+          logf="${OPENSHIFT_LOG_DIR}/hskt.log"
           echo "`date`: Stopping application '$OPENSHIFT_APP_NAME' ..." >> $logf
           /bin/kill $hskt_pid
           ret=$?
