@@ -1,5 +1,7 @@
 #!/bin/bash
 source $OPENSHIFT_CARTRIDGE_SDK_BASH
+source "${OPENSHIFT_RUBY_DIR}/lib/util"
+source "${OPENSHIFT_RUBY_DIR}/lib/ruby_context"
 
 function run_hook() {
   local path="$OPENSHIFT_REPO_DIR/.openshift/action_hooks/$1"
@@ -12,13 +14,46 @@ function run_hook() {
 }
 
 function start() {
-    echo "Starting DIY cartridge"
-    run_hook start
+    logf="${OPENSHIFT_HSKT_LOG_DIR}/hskt.log"
+    echo "Starting hello socket" >> logf
+
+    ruby hellosocket.rb >> $logf 2>&1 &
+
+    ret=$?
+    npid=$!
+    if [ $ret -eq 0 ] then
+            echo "$npid" > "$OPENSHIFT_HSKT_DIR/hskt.pid"
+    else
+            echo "Application '$OPENSHIFT_APP_NAME' failed to start - $ret" 1>&2
+            exit $ret
+    fi
 }
 
 function stop() {
-    echo "Stopping DIY cartridge"
-    run_hook stop
+  echo "Stopping hello socket"
+  if [ -f $OPENSHIFT_HSKT_DIR/hskt.pid ]; then
+          hskt_pid=$( cat $OPENSHIFT_HSKT_DIR/hskt.pid 2> /dev/null )
+  fi
+  
+  if [ -n "$hskt_pid" ]; then
+          logf="${OPENSHIFT_HSKT_LOG_DIR}/hskt.log"
+          echo "`date`: Stopping application '$OPENSHIFT_APP_NAME' ..." >> $logf
+          /bin/kill $hskt_pid
+          ret=$?
+          if [ $ret -ne 0 ]; then
+                  TIMEOUT="$STOPTIMEOUT"
+                  while [ $TIMEOUT -gt 0 ] && is_go_service_running ; do
+                          /bin/kill -0 "$go_pid" >/dev/null 2>&1 || break
+                          sleep 1
+                          let TIMEOUT=${TIMEOUT}-1
+                  done
+          fi
+  
+          echo "`date +"$FMT"`: Stopped Go application '$OPENSHIFT_APP_NAME'" >> $logf
+          rm -f $OPENSHIFT_GO_DIR/pid/go.pid
+  else
+          echo "Warning: Application '$OPENSHIFT_APP_NAME' server exists without a pid file.  Use force-stop to kill." 1>&2
+  fi
 }
 
 function restart() {
@@ -27,7 +62,7 @@ function restart() {
 }
 
 function status() {
-   if output=$(curl http://$OPENSHIFT_DIY_IP:$OPENSHIFT_DIY_PORT 2>&1 )
+   if output=$(curl http://$OPENSHIFT_HSKT_IP:$OPENSHIFT_HSKT_PORT 2>&1 )
    then
       client_result "Application is running"
    else
@@ -43,7 +78,7 @@ function reload() {
 function tidy() {
   client_message "Emptying diy logs in dir: $OPENSHIFT_LOG_DIR"
   shopt -s dotglob
-  rm -rf $OPENSHIFT_LOG_DIR/diy.log*
+  rm -rf $OPENSHIFT_LOG_DIR/hskt.log*
 }
 
 case "$1" in
