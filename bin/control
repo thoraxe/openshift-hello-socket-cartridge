@@ -15,7 +15,7 @@ function start() {
     logf="${OPENSHIFT_LOG_DIR}/hskt.log"
     echo "`date` Starting application '$OPENSHIFT_APP_NAME' ..." >> $logf
 
-    ruby "${OPENSHIFT_REPO_DIR}/hellosocket.rb" >> $logf 2>&1 &
+    ruby "${OPENSHIFT_HSKT_DIR}/usr/hellosocket.rb" >> $logf 2>&1 &
 
     ret=$?
     npid=$!
