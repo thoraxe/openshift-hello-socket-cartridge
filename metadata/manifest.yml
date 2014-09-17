@@ -16,6 +16,7 @@ Endpoints:
     Private-Port-Name: PORT
     Private-Port:      22222
     Public-Port-Name:  PROXY_PORT
+    Options:       { "ssl_to_gear": true}
     Mappings:
       - Frontend:      ""
         Backend:       ""
