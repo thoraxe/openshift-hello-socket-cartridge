@@ -28,17 +28,15 @@ function start() {
 }
 
 function stop() {
-  echo "Stopping hello socket"
   if [ -f $OPENSHIFT_HSKT_DIR/hskt.pid ]; then
           hskt_pid=$( cat $OPENSHIFT_HSKT_DIR/hskt.pid 2> /dev/null )
   fi
   
   if [ -n "$hskt_pid" ]; then
           logf="${OPENSHIFT_LOG_DIR}/hskt.log"
-          echo "`date`: Stopping application '$OPENSHIFT_APP_NAME' ..." >> $logf
+          echo "`date`Stopping application '$OPENSHIFT_APP_NAME' ..." >> $logf
           /bin/kill $hskt_pid
           ret=$?
-          echo "`date +"$FMT"`: Stopped Go application '$OPENSHIFT_APP_NAME'" >> $logf
           rm -f $OPENSHIFT_HSKT_DIR/hskt.pid
   else
           echo "Warning: Application '$OPENSHIFT_APP_NAME' server exists without a pid file.  Use force-stop to kill." 1>&2
